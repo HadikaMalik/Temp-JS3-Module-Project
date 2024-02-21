@@ -1,12 +1,33 @@
+async function getAllEpisodes() {
+  if (state.allEpisodes.length === 0) {
+    try {
+      const response = await fetch("https://api.tvmaze.com/shows/82/episodes");
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch data. Status: ${response.status}`);
+      }
+
+      const episodes = await response.json();
+      state.allEpisodes = episodes;
+      return episodes;
+    } catch (error) {
+      handleFetchError(error);
+      return [];
+    }
+  } else {
+    return state.allEpisodes;
+  }
+}
+
 function setup() {
-  const allEpisodes = getAllEpisodes();
-  state.allEpisodes = allEpisodes;
-  makePageForEpisodes(allEpisodes);
+  getAllEpisodes().then((allEpisodes) => {
+    makePageForEpisodes(allEpisodes);
+  });
 }
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  rootElem.textContent = ""; // Clear existing content
+  rootElem.innerHTML = "";
 
   episodeList.forEach((episode) => {
     const episodeDiv = document.createElement("div");
@@ -81,7 +102,7 @@ function navigateToEpisode(episode) {
     const episodeElement = document.getElementById(`episode - ${episode.id}`);
 
     if (episodeElement) {
-      episodeElement.scrollIntoView({behavior: "smooth"});
+      episodeElement.scrollIntoView({ behavior: "smooth" });
     }
   }
 }
