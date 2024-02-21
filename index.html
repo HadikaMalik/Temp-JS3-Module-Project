@@ -1,21 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | My Name (My GitHub username)</title>
-    <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  </head>
 
-  <body>
-    <div id="root">
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TV Show Project | Hadika Malik (HadikaMalik)</title>
+  <link href="style.css" rel="stylesheet" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+</head>
 
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
 
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
-  </body>
+<body>
+  <div id="root">
+    <template id="film-card">
+      <section>
+        <section id="box-border">
+          <section id="title-section">
+            <h3>Episode title</h3>
+            <p id="season-number"></p>
+          </section>
+        </section>
+        <img id="medium-img"></img>
+        <p id="summary"></p>
+      </section>
+    </template>
+  </div>
+  <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
+  <script src="episodes.js"></script>
+
+  <!-- Loads YOUR javascript code -->
+  <script src="script.js"></script>
+</body>
+
+<footer>
+  <p>Data sourced from <a href="https://www.tvmaze.com/shows/82/game-of-thrones/episodes">TVMaze.com</a></p>
+</footer>
+
 </html>
