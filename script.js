@@ -1,3 +1,5 @@
+// Level 300
+
 async function getAllEpisodes() {
   if (state.allEpisodes.length === 0) {
     try {
@@ -18,6 +20,8 @@ async function getAllEpisodes() {
     return state.allEpisodes;
   }
 }
+
+// Level 100 and a bit of 300 to make the function work
 
 function setup() {
   getAllEpisodes().then((allEpisodes) => {
