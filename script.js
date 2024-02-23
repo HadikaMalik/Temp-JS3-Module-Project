@@ -21,11 +21,55 @@ async function getAllEpisodes() {
   }
 }
 
+async function getAllShows() {
+  try {
+    const response = await fetch("https://api.tvmaze.com/shows");
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch data. Status: ${response.status}`);
+    }
+
+    const shows = await response.json();
+    return shows;
+  } catch (error) {
+    handleFetchError(error);
+    return [];
+  }
+}
+
+function populateShowSelect(shows) {
+  const showSelectElement = document.getElementById("show-select");
+
+  shows.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+
+  shows.forEach((show) => {
+    const option = document.createElement("option");
+    option.value = show.id;
+    option.text = show.name;
+    showSelectElement.appendChild(option);
+  });
+}
+
 // Level 100 and a bit of 300 to make the function work
 
 function setup() {
-  getAllEpisodes().then((allEpisodes) => {
+  Promise.all([getAllEpisodes(), getAllShows()]).then(([allEpisodes, allShows]) => {
     makePageForEpisodes(allEpisodes);
+    populateSelect(allEpisodes);
+    populateShowSelect(allShows);
+  });
+}
+
+function populateSelect(shows) {
+  const selectElement = document.getElementById("select");
+
+  shows.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+
+  shows.forEach((show) => {
+    const option = document.createElement("option");
+    option.value = show.id;
+    option.text = show.name;
+    selectElement.appendChild(option);
   });
 }
 
@@ -67,6 +111,8 @@ function makePageForEpisodes(episodeList) {
 
 const state = {
   allEpisodes: [],
+  allShows: [],  // Add an empty array for shows
+  selectedShowId: "",  // Keep track of the selected show
   searchTerm: ""
 };
 
