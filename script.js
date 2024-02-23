@@ -55,21 +55,7 @@ function populateShowSelect(shows) {
 function setup() {
   Promise.all([getAllEpisodes(), getAllShows()]).then(([allEpisodes, allShows]) => {
     makePageForEpisodes(allEpisodes);
-    populateSelect(allEpisodes);
     populateShowSelect(allShows);
-  });
-}
-
-function populateSelect(shows) {
-  const selectElement = document.getElementById("select");
-
-  shows.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
-
-  shows.forEach((show) => {
-    const option = document.createElement("option");
-    option.value = show.id;
-    option.text = show.name;
-    selectElement.appendChild(option);
   });
 }
 
