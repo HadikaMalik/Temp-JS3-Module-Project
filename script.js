@@ -54,7 +54,7 @@ function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = "";
 
-  state.allEpisodes.forEach((episode) => {
+  episodeList.forEach((episode) => {
     const episodeDiv = document.createElement("div");
     episodeDiv.classList.add("episode");
 
@@ -101,7 +101,7 @@ function render() {
 
   makePageForEpisodes(filteredEpisodes);
 
-  document.getElementById("search-info").textContent = `Displaying ${filteredEpisodes.length} / ${filteredEpisodes.length}`;
+  document.getElementById("search-info").textContent = `Displaying ${filteredEpisodes.length} / ${state.allEpisodes.length}`;
 };
 
 const episodeInput = document.querySelector("#q");
