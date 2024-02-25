@@ -64,7 +64,7 @@ function makePageForEpisodes(episodeList) {
     const seasonNumber = document.createElement("p");
     const episodeNumber = document.createElement("p");
     const episodeImage = document.createElement("img");
-    episodeImage.src = episode.image.medium;
+    episodeImage.src = episode.image && episode.image.medium ? episode.image.medium : 'https://via.placeholder.com/150'; // Use a placeholder image URL or handle it based on your requirements
     episodeImage.alt = episode.name;
     const episodeSummary = document.createElement("p");
     episodeSummary.innerHTML = episode.summary;
