@@ -55,6 +55,8 @@ function makePageForShows(showList) {
   const rootElem = document.getElementById("root");
   rootElem.innerHTML = "";
 
+  showList.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+
   showList.forEach((show) => {
     const showDiv = document.createElement("div");
     showDiv.classList.add("show");
