@@ -45,8 +45,58 @@ async function getAllShows() {
 // Level 100 and a bit of 300 to make the function work
 
 function setup() {
-  getAllShows().then(() => {
+  getAllShows().then((shows) => {
+    makePageForShows(shows);
     populateShowSelect();
+  });
+}
+
+function makePageForShows(showList) {
+  const rootElem = document.getElementById("root");
+  rootElem.innerHTML = "";
+
+  showList.forEach((show) => {
+    const showDiv = document.createElement("div");
+    showDiv.classList.add("show");
+
+    const showTitle = document.createElement("h2");
+    showTitle.textContent = show.name;
+    const showImage = document.createElement("img");
+    showImage.src = show.image && show.image.medium ? show.image.medium : 'https://via.placeholder.com/150'; // Use a placeholder image URL or handle it based on your requirements
+    showImage.alt = show.name;
+    const showSummary = document.createElement("p");
+    showSummary.innerHTML = show.summary;
+    const showGenres = document.createElement("p");
+    showGenres.textContent = `Genres: ${show.genres.join(", ")}`;
+    const showStatus = document.createElement("p");
+    showStatus.textContent = `Status: ${show.status}`;
+    const showRating = document.createElement("p");
+    showRating.textContent = `Rating: ${show.rating.average || 'N/A'}`;
+    const showRuntime = document.createElement("p");
+    showRuntime.textContent = `Runtime: ${show.runtime || 'N/A'} minutes`;
+
+    showDiv.appendChild(showTitle);
+    showDiv.appendChild(showImage);
+    showDiv.appendChild(showSummary);
+    showDiv.appendChild(showGenres);
+    showDiv.appendChild(showStatus);
+    showDiv.appendChild(showRating);
+    showDiv.appendChild(showRuntime);
+
+    showDiv.addEventListener("click", async function () {
+      state.allEpisodes = [];
+      dropDownMenuForEpisode.innerHTML = "";
+
+      const episodes = await getAllEpisodes(show.id);
+      render(episodes);
+
+      state.episodesPage = true;
+
+      const showSelectElement = document.getElementById("show-select");
+      showSelectElement.style.display = "none";
+    });
+
+    rootElem.appendChild(showDiv);
   });
 }
 
@@ -92,6 +142,7 @@ const state = {
   selectedShowId: "",  // Keep track of the selected show
   searchTerm: "",
   episodesByShowId: {},
+  episodesPage: false,
 };
 
 function render() {
@@ -102,6 +153,9 @@ function render() {
   makePageForEpisodes(filteredEpisodes);
 
   document.getElementById("search-info").textContent = `Displaying ${filteredEpisodes.length} / ${state.allEpisodes.length}`;
+
+  const showSelectElement = document.getElementById("show-select");
+  showSelectElement.style.display = state.episodesPage ? "none" : "block";
 };
 
 const episodeInput = document.querySelector("#q");
@@ -137,6 +191,24 @@ function populateShowSelect() {
     option.value = show.id;
     option.text = show.name;
     showSelectElement.appendChild(option);
+  });
+
+ showSelectElement.addEventListener("change", async function () {
+    const selectedValueForShow = showSelectElement.value;
+
+    state.allEpisodes = [];
+    dropDownMenuForEpisode.innerHTML = "";
+
+    if (selectedValueForShow === "all") {
+      render(state.allEpisodes);
+    } else {
+      const episodes = await getAllEpisodes(selectedValueForShow);
+      render(episodes);
+      state.episodesPage = true;
+
+      // Hide the "select your show" dropdown
+      showSelectElement.style.display = "none";
+    }
   });
 }
 
