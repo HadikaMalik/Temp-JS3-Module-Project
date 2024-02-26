@@ -85,6 +85,8 @@ function makePageForShows(showList) {
     showDiv.appendChild(showRating);
     showDiv.appendChild(showRuntime);
 
+    const backToShowsButton = document.getElementById("back-to-shows");
+
     showDiv.addEventListener("click", async function () {
       state.allEpisodes = [];
       dropDownMenuForEpisode.innerHTML = "";
@@ -94,8 +96,22 @@ function makePageForShows(showList) {
 
       state.episodesPage = true;
 
+      backToShowsButton.style.display = "inline";
+
       const showSelectElement = document.getElementById("show-select");
       showSelectElement.style.display = "none";
+    });
+
+    backToShowsButton.addEventListener("click", function(){
+      backToShowsButton.style.display = "none";
+
+      state.episodesPage = false;
+      state.searchTerm = '';
+
+      render();
+
+      const showSelectElement = document.getElementById("show-select");
+      showSelectElement.style.display = "block";
     });
 
     rootElem.appendChild(showDiv);
